@@ -13,5 +13,6 @@
     <p>Отчество: {{ request.user.users.otchestvo }}</p>
 </div>
 <p>&nbsp;</p>
-<button> <a href="sign/logout/">Выйти</a> </button>
+<input type="button" value="Новая публикация" onclick="window.location.href='{% url 'point_create' %}'" /> &nbsp;
+<input type="button" value="Выйти из профиля" onclick="window.location.href='{% url 'logout' %}'" />
 {% endblock %}
