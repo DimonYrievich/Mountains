@@ -1,0 +1,15 @@
+
+{% extends 'flatpages/default.html' %}
+
+{% block title %}
+<h1>ПЕРЕВАЛЫ</h1>
+<p>...........................................................</p>
+<p>&nbsp;</p>
+<p style="text-align: center;"><strong>{% endblock title %}
+
+{% block content %}
+    {% if pereval %}</strong></p><div style="column-count: 3; text-align: center;"><ul style="list-style: none;">
+        {% for name_pereval in pereval %}<li style="text-align: left;"><strong>{{ name_pereval }}</strong></li>
+        {% endfor %}</ul></div><p style="text-align: center;"><strong>
+    {% endif %}
+{% endblock content %}</strong></p>

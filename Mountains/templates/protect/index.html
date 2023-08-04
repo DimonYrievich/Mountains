@@ -1,0 +1,17 @@
+
+{% extends "main.html" %}
+
+{% block content %}
+<h2>Страница авторизованного пользователя {{request.user.username}}</h2>
+<p>&nbsp;</p>
+<div>
+    <p>Имя пользователя: {{ request.user.username }}</p>
+    <p>Электронная почта: {{ request.user.email }}</p>
+    <p>Номер телефона: {{ request.user.users.phone }}</p>
+    <p>Фамилия: {{ request.user.users.surname }}</p>
+    <p>Имя: {{ request.user.users.name }}</p>
+    <p>Отчество: {{ request.user.users.otchestvo }}</p>
+</div>
+<p>&nbsp;</p>
+<button> <a href="sign/logout/">Выйти</a> </button>
+{% endblock %}

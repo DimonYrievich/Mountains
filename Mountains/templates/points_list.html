@@ -1,96 +1,32 @@
-<!--  наследуемся от шаблона default.html, который мы создавали для flatpages -->
 {% extends 'flatpages/default.html' %}
-<!--Подключаем новый файл с созданным мной фильтром-->
-<!--{% load custom_filters %}-->
-<!--Подключаем новый файл с созданным мной тегом-->
-<!--{% load custom_tags %}-->
-<!-- Загружаем теги с переводами текста -->
-<!--{% load i18n %}-->
-<!-- Загружаем тег для работы с часовыми поясами -->
-<!--{% load tz %}-->
+
+{% block title %}
+<h1>ВСЕ ПУБЛИКАЦИИ</h1>
+<p>......................................................................................................</p>
+{% endblock title %}
 
 {% block content %}
-<html lang="ru">    <!-- для перевода страницы -->
-<head>
-    <!-- Если сейчас больше чем 19 или же меньше 7, то выводим тёмную тему, иначе выводим светлую -->
-    <style>
-        body {background-color: {% if current_time.hour >= 19 or current_time.hour <= 7 %} darkcyan {% else %} powderblue {% endif %};}
-    </style>
-</head>
-<body>
-<!-- Загружаем форму с языковой панелью, она будет в правом верхнем углу -->
-<form action="{% url 'set_language' %}" method="POST"> <p style="text-align: right;"> {% csrf_token %} <!-- Не забываем по csrf_token для POST запросов -->
-        <input type="hidden" name="next" value="{{ redirect_to }}">
-
-        <select name="language" id="">
-            {% get_available_languages as LANGUAGES %} <!-- получаем языки -->
-            {% get_language_info_list for LANGUAGES as languages %} <!-- Помещаем их в список languages -->
-
-            {% for language in languages %} <!-- Итерируясь по списку, выводим их название на языке пользователя и код -->
-                <option value="{{ language.code }}" {% if language.code == LANGUAGE_CODE %} selected {% endif %}>
-                    {{ language.name_local }} - {{ language.code }}
-                </option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="set">
-    </form>
-
-    {% get_current_timezone as TIME_ZONE %}
-    <form action="" method="POST">
-        {% csrf_token %}
-        <label for="timezone">Time zone:</label>
-        <select name="timezone">
-            {% for tz in timezones %}
-            <option value="{{ tz }}"{% if tz == TIME_ZONE %} selected{% endif %}>{{ tz }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Set">
-    </form>
-
-    {{ TIME_ZONE }}
-    {{ current_time|timezone:TIME_ZONE }} <!-- Отображаем время в выбранном часовом поясе  -->
-
-    {% for model in models %}
-    <div class="model-class">
-        {{ model.name }}
-    </div>
-    {% endfor %}
-<!-- Конец формы с языковой панелью -->
-
-
-    <h1>{% trans "All publications" %}</h1>     <!-- Если поменять язык в языковой панели на русский, то будет перевод "Все публикации" -->
-    <!-- Добавляем форму, которая объединяет набор полей, которые будут отправляться в запросе -->
+    <!--Добавляем форму фильтрации-->
     <form action="" method="get">
-       <!-- Переменная, которую мы передали через контекст, может сгенерировать нам форму с полями -->
-       {{ filterset.form.as_p }}
-       <!-- Добавим кнопку отправки данных формы -->
-       <input type="submit" value="Найти" />
+        <p style="text-align: center;">Перевал: {{ filterset.form.pereval }}</p>
+        <p style="text-align: center;">Статус:&nbsp; &nbsp; &nbsp;{{ filterset.form.status }}</p>
+        <p style="text-align: center;"><input type="submit" value="Найти" /></p>
     </form>
-
-    <hr>
-    {% if posts %}
-       <table align='center' border="0" cellspacing="0">         <!-- Начинаем описывать таблицу -->
-           <tr>                                                  <!-- Добавляем строку -->
-               <td>Тип публикации</td>                           <!-- Добавляем ячейку в строку в соответствии с БД -->
-               <td>Заголовок</td>                                <!-- Добавляем ещё одну ячейку в строку -->
-               <td>Текст</td>                                    <!-- ... -->
-               <td>Автор</td>                                    <!-- ... -->
-               <td>Дата публикации</td>                          <!-- ... -->
-           </tr>                                                 <!-- Закрываем HTML-тег строки -->
-<!-- Далее для каждой публикации будет генерироваться новая строчка, т.е. новый HTML код, который указан в теле цикла. При этом сам цикл
-работает точно так же, как и в Python. post — переменная цикла, т.е. наша публикация получена из списка -->
-           {% for post in posts %}
-           <tr>
-               <td>{{ post.article_or_news }}</td>               <!-- <td> {% for article_or_news in post.article_or_news %} {{ article_or_news }} {% endfor %}</td> -->
-               <td>{{ post.title|censor }}</td>                  <!--Применим к тексту фильтр нежелательных слов)-->
-               <td>{{ post.text|truncatewords:15|censor }}</td>  <!--Применим фильтр к тексту (ограничим вывод текста до 15 слов + удаление нежелательных слов)-->
-               <td>{{ post.author }}</td>
-               <td>{{ post.time_in|date:'d.m.Y' }}</td>          <!--Применим фильтр к дате (с форматом вывода можно эксперементировать)-->
-           </tr>
-           {% endfor %}
-       </table>                                                  <!-- Закрываем HTML-тег таблицы -->
-    {% else %}
-       <h2>Публикаций нет!</h2>
+    {% if points %}
+        {% for point in points %}
+<p style="text-align: left;"><strong><span style="color: #000000;">_______________________________________________________________________________________________________________________________________________________________________________________________________</span></strong></p>
+<p style="text-align: left;"><strong>{{ point.add_time|date:'d.m.Y' }}&nbsp; &nbsp; &nbsp; <span style="color: #00ff00;">Статус -</span> <span style="color: #00ff00;"> {% for status in point.status.all %}{{ status }}{% endfor %}</span> </strong></p>
+<p style="text-align: center;"><strong>{{ point.title }}</strong></p>
+<p style="text-align: left;">Перевал:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>{% for pereval in point.pereval.all %}{{ pereval }}{% endfor %}</strong></p>
+<p style="text-align: left;">Координаты:&nbsp; &nbsp;<strong>{{ point.coords }}</strong></p>
+<p style="text-align: left;">Уровень:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>{% for level in point.level.all %}{{ level }}{% endfor %}</strong></p>
+<p style="text-align: center;">{{ point.photo }}</p>
+<p style="text-align: left;">Описание:&nbsp; &nbsp; &nbsp; &nbsp; <strong>{{ point.description }}</strong></p>
+<p style="text-align: left;">Пользователь:&nbsp; <strong>{{ point.user }}</strong></p>
+<p style="text-align: left;"><strong><span style="color: #000000;">______________________________________________________________________________________________________________________________________________________________________________________________________</span></strong></p>
+        {% endfor %}
+            {% else %}
+                <h2>Публикаций нет!</h2>
     {% endif %}
 
     <!-- Добавляем пагинацию на страницу -->
@@ -115,7 +51,7 @@
            <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
         {% endif %}
     {% endif %}
-</body>
-</html>
+
+<p>&nbsp;</p>
 
 {% endblock content %}

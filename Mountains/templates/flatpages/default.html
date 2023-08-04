@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Bare - Start Bootstrap Template</title>
         <!-- Favicon-->
         <!-- Core theme CSS (includes Bootstrap)-->
         {% load static %}
@@ -24,12 +23,14 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav ml-auto">
+                        <li><span style="color: #ff0000;">
+                            <a class="nav-link" style="color: #ff0000;" href= "/" >Я</a></span>
+                        </li>
                         <li class="nav-item active">
-                            <a class="nav-link" href="/mountains/pereval/">Перевалы
-                            </a>
+                            <a class="nav-link" href="/mountains/I/">Мои публикации</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="/mountains/I/">Мой профиль</a>
+                            <a class="nav-link" href="/mountains/pereval/">Перевалы</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/contacts/">Контакты</a>
@@ -38,25 +39,20 @@
                 </div>
             </div>
         </nav>
-                <!-- Masthead-->
-        <header class="masthead bg-primary text-white text-center">
-            <div class="container d-flex align-items-center flex-column">
-                <!-- Masthead Avatar Image-->
-                <img class="masthead-avatar mb-5" src="assets/img/avataaars.svg" alt="..." />
-                <p>&nbsp;</p>
-                <!-- Заголовок страницы и её содержание-->
-                    {% block title %}
-                        <!--   -->
-                    {% endblock title %}
-                <p>____________________________________________________________________________________________________________________________________________<p>
-                <p>____________________________________________________________________________________________</p>
-                <pre>
-                    {% block content %}
-                        <!--   -->
-                    {% endblock content %}
-                </pre>
+        <div class="container">
+            <div class="text-center mt-5">
+                        {% block title %}
+                            <!--   -->
+                        {% endblock title %}
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        {% block content %}
+                            <!--    -->
+                        {% endblock content %}
+                    </div>
+                </div>
             </div>
-        </header>
+        </div>
         <!-- Bootstrap core JS-->
         <!-- Core theme JS-->
     </body>

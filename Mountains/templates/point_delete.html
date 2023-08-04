@@ -1,10 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
-</body>
-</html>
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<h1>Удаление публикации</h1>
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    <p>Удаляем {{ object.name }} ?</p>
+    <input type="submit" value=" Да " />&nbsp;
+    <input type="button" value="Нет" onclick="window.location.href='{% url 'mypoints' %}'" />
+</form>
+{% endblock content %}

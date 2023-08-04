@@ -1,10 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'flatpages/default.html' %}
 
-</body>
-</html>
+{% block title %}
+<h1>МОИ ПУБЛИКАЦИИ</h1>
+<p>..............................................................................................................</p>
+{% endblock title %}
+
+{% block content %}
+    <!--Добавляем форму фильтрации-->
+    <form action="" method="get">
+        <p style="text-align: center;">Перевал: {{ filterset.form.pereval }}</p>   <!--{{ filterset.form.as_p }} так будет форма со всеми выбранными полями-->
+        <p style="text-align: center;"><input type="submit" value="Найти" /></p>
+    </form>
+    {% if mypoints %}
+        {% for mypoint in mypoints %}
+<p style="text-align: left;"><strong><span style="color: #000000;">_______________________________________________________________________________________________________________________________________________________________________________________________________</span></strong></p>
+<p style="text-align: left;"><strong>{{ mypoint.add_time|date:'d.m.Y' }}&nbsp; &nbsp; &nbsp; <span style="color: #00ff00;">Статус -</span> <span style="color: #00ff00;"> {% for status in mypoint.status.all %}{{ status }}{% endfor %}</span> </strong></p>
+<p style="text-align: center;"><strong>{{ mypoint.title }}</strong></p>
+<p style="text-align: left;">Перевал:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>{% for pereval in mypoint.pereval.all %}{{ pereval }}{% endfor %}</strong></p>
+<p style="text-align: left;">Координаты:&nbsp; &nbsp;<strong>{{ mypoint.coords }}</strong></p>
+<p style="text-align: left;">Уровень:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>{% for level in mypoint.level.all %}{{ level }}{% endfor %}</strong></p>
+<p style="text-align: center;">{{ mypoint.photo }}</p>
+<p style="text-align: left;">Описание:&nbsp; &nbsp; &nbsp; &nbsp; <strong>{{ mypoint.description }}</strong></p>
+<p style="text-align: left;"><strong><span style="color: #000000;">______________________________________________________________________________________________________________________________________________________________________________________________________</span></strong></p>
+        {% endfor %}
+            {% else %}
+                <h2>Публикаций нет!</h2>
+    {% endif %}
+
+{% endblock content %}

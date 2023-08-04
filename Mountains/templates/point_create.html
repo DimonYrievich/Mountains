@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
 
-</body>
-</html>
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+<h1>Новая публикация</h1>
+<hr>
+<form action="" method="post">
+    {% csrf_token %}
+    Координаты:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+    &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
+    &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp;
+    &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;{{ coords_form.as_p }}
+    <hr>
+    {{ form.as_p }}
+    <hr>
+    <input type="submit" value="Создать" />&nbsp;
+    <input type="button" value="Отмена" onclick="window.location.href='{% url 'mypoints' %}'" />
+</form>
+<hr>
+{% endblock content %}
