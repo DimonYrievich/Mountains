@@ -31,7 +31,8 @@ class MypointsList(LoginRequiredMixin, ListView):          # ПРЕДСТАВЛ�
     model = Point
     template_name = 'mypoints_list.html'
     context_object_name = 'mypoints'
-
+    login_url = 'login'                                 # Меняем путь к странице входа (сначала авторизация/регистрация,
+                                                                                               # потом вход на страницу)
     # Фильтрация. Переопределяем функцию получения списка публикаций.
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -59,7 +60,7 @@ class PointDetail(DetailView):                           # ПРЕДСТАВЛЕ�
 
 ########################################################################################################################
 
-class PointCreate(CreateView, LoginRequiredMixin):                               # ПРЕДСТАВЛЕНИЕ для создания публикации
+class PointCreate(LoginRequiredMixin, CreateView):                               # ПРЕДСТАВЛЕНИЕ для создания публикации
     form_class = PointForm                                                               # Указываем разработанную форму
     model = Point
     template_name = 'point_create.html'
@@ -78,7 +79,14 @@ class PointCreate(CreateView, LoginRequiredMixin):                              
         if coords_form.is_valid():
             coords = coords_form.save()
             form.instance.coords = coords
-            form.instance.author = self.request.user
+
+            user_profile = Users.objects.get(user=self.request.user)  # Получаем экземпляр модели Users для текущего пользователя
+            form.instance.user = user_profile                         # Присваиваем полю user по умолчанию для авторизованных user-ов
+            form.instance.save()                                                       # Сохраняем объекты в базе данных
+
+            status_new = Status.objects.get(name_status='new')                 # Устанавливаем статус "new" по умолчанию
+            form.instance.status.add(status_new)                               # Устанавливаем статус "new" по умолчанию
+
             return super().form_valid(form)
         else:
             return self.form_invalid(form)
@@ -88,7 +96,7 @@ class PointCreate(CreateView, LoginRequiredMixin):                              
 class PointUpdate(UpdateView, LoginRequiredMixin):                              # ПРЕДСТАВЛЕНИЕ для изменения публикации
     form_class = PointForm                               # Будем использовать ту же форму, что и для создания публикации
     model = Point
-    template_name = 'point_create.html'                # Будем использовать тот же шаблон, что и для создания публикации
+    template_name = 'point_update.html'
     success_url = reverse_lazy('mypoints')       # Указываем, куда перенаправить пользователя после изменения публикации
 
 ########################################################################################################################

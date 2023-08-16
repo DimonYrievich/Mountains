@@ -3,9 +3,12 @@
 
 {% block content %}
 <h2> Регистрация </h2>
-<form method="post">
+<form method="post" action="{% url 'signup' %}">    <!-- Было так <form method="post"> -->
 {% csrf_token %}
 {{ form.as_p }}
 <input type="submit" value="Продолжить">
 </form>
 {% endblock %}
+
+<!--При заполнении формы регистрации и её отправке, данные нового пользователя будут автоматически сохранены в базе
+данных без необходимости входа в админ-панель-->

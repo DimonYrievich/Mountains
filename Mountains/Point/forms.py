@@ -1,9 +1,9 @@
 
                                     # СОЗДАНИЕ ФОРМЫ ДЛЯ МОДЕЛИ И ВАЛИДАЦИЯ ДАННЫХ В ФОРМАХ
-from django import forms
-from .models import Point, Coords, Users, Pereval
-from django.core.exceptions import ValidationError
 
+from django import forms
+from .models import Point, Coords
+from django.core.exceptions import ValidationError
 
 ########################################################################################################################
                                             # Форма для модели Coords
@@ -20,7 +20,6 @@ class CoordsForm(forms.ModelForm):
 ########################################################################################################################
                                             # Форма для модели Point
 class PointForm(forms.ModelForm):
-    #coords_form = CoordsForm()
     class Meta:
         model = Point
         # Выбираем поля из модели. Если указать fields = '__all__' , то Django возьмет все поля.
@@ -28,44 +27,30 @@ class PointForm(forms.ModelForm):
             'pereval',
             'title',
             'description',
-            #'coords',
             'level',
             'photo',
-            'user',
-            'status',
+#            'user',                # Авторизованный user устанавливается по умолчанию  (см. class PointCreate во вьюхе)
+#            'status',                      # Я устанавливаем статус "new" по умолчанию (см. class PointCreate во вьюхе)
         ]
         # Меняем названия полей на русский
         labels = {
             'pereval': 'Перевал',
             'title': 'Заголовок',
             'description': 'Описание',
-            'coords': 'Координаты',
             'level': 'Уровень',
             'photo': 'Фото',
-            'user': 'Пользователь',
-            'status': 'Статус',
             }
         #Меняем размеры и формы полей с использованием виджетов forms.Textarea, forms.Select, forms.TextInput и т.д.
         widgets = {
-            #'pereval': forms.Select(attrs={'style': 'width: 300px; height: 25px;'}),
             'title': forms.TextInput(attrs={'style': 'width: 300px; height: 25px;'}),
             'description': forms.Textarea(attrs={'style': 'width: 300px; height: 25px;'}),
-            #'coords': forms.Select(attrs={'style': 'width: 300px; height: 25px;'}),
-            #'level': forms.Select(attrs={'style': 'width: 300px; height: 25px;'}),
             #'photo': forms.ClearableFileInput(attrs={'style': 'width: 300px; height: 25px;'}),
-            'user': forms.Select(attrs={'style': 'width: 300px; height: 25px;'}),
-            #'status': forms.Select(attrs={'style': 'width: 300px; height: 25px;'}),
             }
 
     def __init__(self, *args, **kwargs):
         super(PointForm, self).__init__(*args, **kwargs)
         self.fields['pereval'].empty_label = '---------- выбери из списка ----------'
         self.fields['level'].empty_label = '---------- выбери из списка ----------'
-        self.fields['status'].empty_label = '---------- выбери из списка ----------'
-
-        # # Устанавливаем виджет для поля 'status' как отключенный с фиксированным значением 'new'
-        # self.fields['status'].widget.attrs['disabled'] = True
-        # self.initial['status'] = 'new'  # Устанавливаем начальное значение 'new'
 
 
     # Валидация. Переопределяем метод clean в форме:

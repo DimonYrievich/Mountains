@@ -6,7 +6,7 @@
 <hr>
 <form action="" method="post">
     {% csrf_token %}
-    <p>Удаляем {{ object.name }} ?</p>
+    <p>Удаляем "{{ object.title }}"?</p>
     <input type="submit" value=" Да " />&nbsp;
     <input type="button" value="Нет" onclick="window.location.href='{% url 'mypoints' %}'" />
 </form>

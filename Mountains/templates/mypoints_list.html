@@ -7,11 +7,12 @@
 {% endblock title %}
 
 {% block content %}
+
     <!--Добавляем форму фильтрации-->
     <form action="" method="get">
-        <p style="text-align: center;">Перевал: {{ filterset.form.pereval }}</p>   <!--{{ filterset.form.as_p }} так будет форма со всеми выбранными полями-->
-        <p style="text-align: center;"><input type="submit" value="Найти" /></p>
+        <p style="text-align: center;">Перевал: {{ filterset.form.pereval }}&nbsp; <input type="submit" value="Найти"  style="background-color: rgba(0, 0, 0, 0.2); border: none;" /></p>     <!--{{ filterset.form.as_p }} так будет форма со всеми выбранными полями-->
     </form>
+
     {% if mypoints %}
         {% for mypoint in mypoints %}
 <p style="text-align: left;"><strong><span style="color: #000000;">_______________________________________________________________________________________________________________________________________________________________________________________________________</span></strong></p>
@@ -22,6 +23,10 @@
 <p style="text-align: left;">Уровень:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>{% for level in mypoint.level.all %}{{ level }}{% endfor %}</strong></p>
 <p style="text-align: center;">{{ mypoint.photo }}</p>
 <p style="text-align: left;">Описание:&nbsp; &nbsp; &nbsp; &nbsp; <strong>{{ mypoint.description }}</strong></p>
+        <!--Добавляем кнопки "Редактировать" и "Удалить"-->
+<input type="button" value="Редактировать" onclick="window.location.href='{% url 'point_update' mypoint.id %}'" style="background-color: rgba(0, 0, 0, 0); border: none;" /> &nbsp;
+<input type="button" value="      Удалить      " onclick="window.location.href='{% url 'point_delete' mypoint.id %}'" style="background-color: rgba(0, 0, 0, 0); border: none;" />
+
 <p style="text-align: left;"><strong><span style="color: #000000;">______________________________________________________________________________________________________________________________________________________________________________________________________</span></strong></p>
         {% endfor %}
             {% else %}

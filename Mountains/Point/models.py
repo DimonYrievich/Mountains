@@ -151,11 +151,14 @@ class Point(models.Model):
     user = models.ForeignKey('Users', on_delete=models.CASCADE)                 # Связь «один ко многим» с моделью Users
     add_time = models.DateTimeField(auto_now_add=True)                                                # Время публикации
     status = models.ManyToManyField('Status', through = 'PointStatus', related_name='point')        # Связь со статусами
+#    status = models.ManyToManyField('Status', through='PointStatus', related_name='point', default=Status.NEW)
 
     # Для вывода в HTML странице указываем, как должен выглядеть объект нашей модели (что именно нужно выводить)
     def __str__(self):
-        return f'{self.pereval} {self.title} {self.description[:1000]} {self.coords} {self.level} {self.photo} ' \
-               f'{self.user} {self.add_time} {self.status}'
+        return f'{self.title} {self.description[:1000]} {self.coords} {self.photo} {self.user} {self.add_time}'
+#     def __str__(self):
+#         return f'{self.pereval} {self.title} {self.description[:1000]} {self.coords} {self.level} {self.photo} ' \
+#                f'{self.user} {self.add_time} {self.status}'
 
     # Добавим метод get_absolute_url, чтобы указать, какую страницу нужно открыть после создания публикации
     # Функция reverse позволяет указать не путь вида /board/…, а название пути.
