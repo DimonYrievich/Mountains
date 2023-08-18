@@ -16,7 +16,7 @@ class Users(models.Model):
     otchestvo = models.CharField(max_length=50, blank=True)            # Поле для отчества пользователя (необязательное,
                                                                        # может быть пустым)
     def __str__(self):
-        return f'{self.user.username} {self.email} {self.phone} {self.surname} {self.name} {self.otchestvo}'
+        return f'{self.user} {self.email} {self.phone} {self.surname} {self.name} {self.otchestvo}'
 
 ########################################################################################################################
 
@@ -156,9 +156,6 @@ class Point(models.Model):
     # Для вывода в HTML странице указываем, как должен выглядеть объект нашей модели (что именно нужно выводить)
     def __str__(self):
         return f'{self.title} {self.description[:1000]} {self.coords} {self.photo} {self.user} {self.add_time}'
-#     def __str__(self):
-#         return f'{self.pereval} {self.title} {self.description[:1000]} {self.coords} {self.level} {self.photo} ' \
-#                f'{self.user} {self.add_time} {self.status}'
 
     # Добавим метод get_absolute_url, чтобы указать, какую страницу нужно открыть после создания публикации
     # Функция reverse позволяет указать не путь вида /board/…, а название пути.

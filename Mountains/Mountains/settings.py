@@ -30,7 +30,7 @@ INSTALLED_APPS = [
     'protect',                        # Для обеспечения безопасности и защиты приложения от несанкционированного доступа
     ]
 
-SITE_ID = 1                         # добавим переменную SITE_ID для работы с плоскими страничками
+SITE_ID = 1                                               # добавим переменную SITE_ID для работы с плоскими страничками
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -92,6 +92,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
+# AUTH_USER_MODEL = 'Point.Users'             # Указываем модель для аутентификации пользователя, если есть обязательные
+                                                                                                   # поля для заполнения
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
@@ -104,7 +108,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-STATICFILES_DIRS = [            # Чтобы проект знал, где искать стили
+STATICFILES_DIRS = [                                                               # Чтобы проект знал, где искать стили
     BASE_DIR / "static"
 ]
 
