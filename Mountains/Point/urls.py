@@ -1,9 +1,8 @@
 
 from django.urls import path
 from .views import *
-from django.conf import settings
-from django.conf.urls.static import static
 
+########################################################################################################################
 
 urlpatterns = [
 	path('', PointsList.as_view(), name='points'),						# name='_____' - название пути
@@ -15,6 +14,4 @@ urlpatterns = [
 	path('<int:pk>/delete/', PointDelete.as_view(), name='point_delete'),
 	]
 
-# Добавляем обработчик для медиа-файлов
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+########################################################################################################################

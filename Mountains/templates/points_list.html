@@ -20,7 +20,7 @@
 <p style="text-align: left;">Перевал:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>{% for pereval in point.pereval.all %}{{ pereval }}{% endfor %}</strong></p>
 <p style="text-align: left;">Координаты:&nbsp; &nbsp;<strong>{{ point.coords }}</strong></p>
 <p style="text-align: left;">Уровень:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>{% for level in point.level.all %}{{ level }}{% endfor %}</strong></p>
-<p style="text-align: center;">{{ point.photo }}</p>
+<p style="text-align: center;">{% if point.photo %}<img src="{{ point.photo.url }}" alt="Фото" style="max-width: 20%;" />{% endif %}</p>
 <p style="text-align: left;">Описание:&nbsp; &nbsp; &nbsp; &nbsp; <strong>{{ point.description }}</strong></p>
 <p style="text-align: left;">Пользователь:&nbsp; <strong>{{ point.user }}</strong></p>
 <p style="text-align: left;"><strong><span style="color: #000000;">______________________________________________________________________________________________________________________________________________________________________________________________________</span></strong></p>

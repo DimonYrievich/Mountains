@@ -4,7 +4,8 @@
 {% block content %}
 <h1>Редактирование публикации</h1>
 <hr>
-<form action="" method="post">
+{% if is_new_status %}
+<form action="" method="post" enctype="multipart/form-data">
     {% csrf_token %}
     Координаты:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
     &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;
@@ -16,5 +17,15 @@
     <input type="submit" value="Сохранить" />&nbsp;
     <input type="button" value="Отмена" onclick="window.location.href='{% url 'mypoints' %}'" />
 </form>
+{% else %}
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p class="error"><span style="color: #ff0000;">А всё уже! Всё! Вы не можете редактировать публикацию с текущим статусом.</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<input type="button" value="Вернуться назад" onclick="window.location.href='{% url 'mypoints' %}'" />
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+{% endif %}
 <hr>
 {% endblock content %}

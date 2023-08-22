@@ -34,7 +34,8 @@ class MypointsList(LoginRequiredMixin, ListView):                         # Дл
     template_name = 'mypoints_list.html'
     context_object_name = 'mypoints'
     login_url = 'login'                                 # Меняем путь к странице входа (сначала авторизация/регистрация,
-                                                                                               # потом вход на страницу)
+    paginate_by = 4                                                                            # потом вход на страницу)
+
     # Переопределяем функцию получения списка публикаций.
     def get_queryset(self):
         queryset = super().get_queryset()                           # Получаем исходный набор всех объектов модели Point
@@ -106,6 +107,27 @@ class PointUpdate(UpdateView, LoginRequiredMixin):                              
     model = Point
     template_name = 'point_update.html'
     success_url = reverse_lazy('mypoints')       # Указываем, куда перенаправить пользователя после изменения публикации
+
+    # Проверяем данные на валидность, сохраняем или обновляем координаты
+    def form_valid(self, form):
+        coords_form = CoordsForm(self.request.POST, instance=form.instance.coords)
+        if coords_form.is_valid():
+            coords = coords_form.save()
+            form.instance.coords = coords
+        return super().form_valid(form)
+
+    # Делаем так, чтобы при статусе отличным от 'new' пользователь не мог редактировать свою публикацию
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['is_new_status'] = self.object.status.filter(name_status='new').exists()
+
+        # Проверяем, есть ли у публикации координаты, и если есть, передаем их в форму CoordsForm
+        if self.object.coords:
+            context['coords_form'] = CoordsForm(instance=self.object.coords)
+        else:
+            context['coords_form'] = CoordsForm()
+
+        return context
 
 ########################################################################################################################
 

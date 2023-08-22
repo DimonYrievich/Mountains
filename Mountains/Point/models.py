@@ -147,11 +147,10 @@ class Point(models.Model):
     description = models.TextField()                                                                 # Поле для описания
     coords = models.OneToOneField(Coords, on_delete=models.CASCADE)                # Поле с географическими координатами
     level = models.ManyToManyField('Level', through = 'PointLevel', related_name='point')   # Связь с уровнями сложности
-    photo = models.ImageField(upload_to='photos/', blank=True)      # Определяем поле для вложений(фото), необязательное
+    photo = models.ImageField(upload_to='photos/', null=True, blank=True)           # Определяем поле для вложений(фото)
     user = models.ForeignKey('Users', on_delete=models.CASCADE)                 # Связь «один ко многим» с моделью Users
     add_time = models.DateTimeField(auto_now_add=True)                                                # Время публикации
     status = models.ManyToManyField('Status', through = 'PointStatus', related_name='point')        # Связь со статусами
-#    status = models.ManyToManyField('Status', through='PointStatus', related_name='point', default=Status.NEW)
 
     # Для вывода в HTML странице указываем, как должен выглядеть объект нашей модели (что именно нужно выводить)
     def __str__(self):
@@ -163,7 +162,7 @@ class Point(models.Model):
         return reverse('point_detail', args=[str(self.id)])
 
 ########################################################################################################################
-                                            #Промежуточная таблица
+                                            # Промежуточная таблица
 class PointPereval(models.Model):
 
     point = models.ForeignKey("Point", on_delete=models.CASCADE)
@@ -173,7 +172,7 @@ class PointPereval(models.Model):
         return f'{self.point}:{self.pereval}'
 
 ########################################################################################################################
-                                           #Промежуточная таблица
+                                           # Промежуточная таблица
 class PointLevel(models.Model):
 
     point = models.ForeignKey("Point", on_delete=models.CASCADE)
@@ -183,7 +182,7 @@ class PointLevel(models.Model):
         return f'{self.point}:{self.level}'
 
 ########################################################################################################################
-                                           #Промежуточная таблица
+                                           # Промежуточная таблица
 class PointStatus(models.Model):
 
     point = models.ForeignKey("Point", on_delete=models.CASCADE)

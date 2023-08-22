@@ -21,7 +21,7 @@
 <p style="text-align: left;">Перевал:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>{% for pereval in mypoint.pereval.all %}{{ pereval }}{% endfor %}</strong></p>
 <p style="text-align: left;">Координаты:&nbsp; &nbsp;<strong>{{ mypoint.coords }}</strong></p>
 <p style="text-align: left;">Уровень:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>{% for level in mypoint.level.all %}{{ level }}{% endfor %}</strong></p>
-<p style="text-align: center;">{{ mypoint.photo }}</p>
+<p style="text-align: center;">{% if mypoint.photo %}<img src="{{ mypoint.photo.url }}" alt="Фото" style="max-width: 20%;" />{% endif %}</p>
 <p style="text-align: left;">Описание:&nbsp; &nbsp; &nbsp; &nbsp; <strong>{{ mypoint.description }}</strong></p>
         <!--Добавляем кнопки "Редактировать" и "Удалить"-->
 <input type="button" value="Редактировать" onclick="window.location.href='{% url 'point_update' mypoint.id %}'" style="background-color: rgba(0, 0, 0, 0); border: none;" /> &nbsp;
@@ -32,5 +32,30 @@
             {% else %}
                 <h2>Публикаций нет!</h2>
     {% endif %}
+
+    <!-- Добавляем пагинацию на страницу -->
+
+    <!-- Информация о предыдущих страницах -->
+    {% if page_obj.has_previous %}
+       <a href="?page=1">1</a>
+       {% if page_obj.previous_page_number != 1 %}
+           ...
+           <a href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a>
+       {% endif %}
+    {% endif %}
+
+    <!-- Информация о текущей странице -->
+    {{ page_obj.number }}
+
+    <!-- Информация о следующих страницах -->
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a>
+        {% if paginator.num_pages != page_obj.next_page_number %}
+           ...
+           <a href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a>
+        {% endif %}
+    {% endif %}
+
+<p>&nbsp;</p>
 
 {% endblock content %}
